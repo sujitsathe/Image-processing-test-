@@ -1,0 +1,74 @@
+% Clear the workspace and command window
+clear all; clc;
+
+% Select and load the training dataset
+train_path = uigetdir(pwd, 'Select the Training Dataset Directory');
+train_files = dir(fullfile(train_path, '*.jpg'));
+
+% Initialize feature database and labels
+features_db = [];
+file_names = {train_files.name}; % Store file names for later identification
+
+% Process each training image
+for i = 1:length(train_files)
+    % Read the image
+    train_image_path = fullfile(train_files(i).folder, train_files(i).name);
+    img = imread(train_image_path);
+    
+    % Check if the image is RGB or already grayscale
+    if size(img, 3) == 3
+        img_gray = rgb2gray(img); % Convert RGB to grayscale
+    else
+        img_gray = img; % Already grayscale
+    end
+    
+    % Apply edge detection
+    img_edges = edge(img_gray, 'Canny');
+    
+    % Extract features (sum of edge values)
+    img_features = sum(img_edges(:));
+    
+    % Append features to the database
+    features_db = [features_db; img_features];
+end
+
+% Select and load the test image
+[test_file, test_path] = uigetfile('*.jpg', 'Select the Test Image');
+if isequal(test_file, 0)
+    disp('Test image selection canceled.');
+    return;
+end
+test_image = imread(fullfile(test_path, test_file));
+
+% Preprocess the test image
+if size(test_image, 3) == 3
+    test_gray = rgb2gray(test_image); % Convert RGB to grayscale
+else
+    test_gray = test_image; % Already grayscale
+end
+test_edges = edge(test_gray, 'Canny');
+
+% Extract features for the test image
+test_features = sum(test_edges(:));
+
+% Compare the test image features with all training images
+differences = abs(features_db - test_features);
+
+% Find the best match (minimum difference)
+[~, best_match_idx] = min(differences);
+
+% Display the results
+disp(['Test Image: ', test_file]);
+disp(['Matched Training Image: ', file_names{best_match_idx}]);
+
+% Show the test image and the matched training image
+figure;
+subplot(1, 2, 1);
+imshow(test_image);
+title(['Test Image: ', test_file]);
+
+subplot(1, 2, 2);
+matched_image_path = fullfile(train_files(best_match_idx).folder, train_files(best_match_idx).name);
+matched_image = imread(matched_image_path);
+imshow(matched_image);
+title(['Matched Image: ', file_names{best_match_idx}]);
