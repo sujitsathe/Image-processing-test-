@@ -12,3 +12,6 @@ This MATLAB-based project provides a graphical user interface (GUI) to compare a
 ## Requirements
 - MATLAB R2018b or later (with App Designer support).
 - Image Processing Toolbox.
+## Note
+- You can add more images to dataset
+- You need to download the image for browser and give name test_file
