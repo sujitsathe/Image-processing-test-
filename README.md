@@ -14,4 +14,4 @@ This MATLAB-based project provides a graphical user interface (GUI) to compare a
 - Image Processing Toolbox.
 ## Note
 - You can add more images to dataset
-- You need to download the image for browser and give name test_file
+- You need to download the image for browser and give name test_image
