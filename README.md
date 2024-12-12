@@ -15,3 +15,9 @@ This MATLAB-based project provides a graphical user interface (GUI) to compare a
 ## Note
 - You can add more images to dataset
 - You need to download the image for browser and give name test_image
+
+## Author
+This project is created by **Sujit Sathe**  
+Email: [sujitsathe11@gmail.com](mailto:sujitsathe11@gmail.com)
+
+
